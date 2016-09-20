@@ -15,8 +15,8 @@ plt.style.use('ggplot')
 def cross_split(data, label, k_cross, n, perm, N, length):
     x, y = [], []
     for i in range(k_cross):
-        x.append(mnist.data[perm[i*N/cross:(i+1)*N/cross]])
-        y.append(mnist.target[perm[i*N/cross:(i+1)*N/cross]])
+        x.append(data[perm[i*N/k_cross:(i+1)*N/k_cross]])
+        y.append(label[perm[i*N/k_cross:(i+1)*N/k_cross]])
     x_train, y_train = [], []
     for i in range(k_cross):
         if i == n:
@@ -118,8 +118,8 @@ if __name__ == '__main__':
                 N_test = x_test.shape[0]
                 loss_sum, acc_sum = 0, 0
                 for i in range(0, N_test):
-                    x_batch = x_train[i].reshape(1, 1, length, length)
-                    y_batch = np.array(y_train[i]).reshape(1)
+                    x_batch = x_test[i].reshape(1, 1, length, length)
+                    y_batch = np.array(y_test[i]).reshape(1)
                     loss, acc = forward(x_batch, y_batch)
                     loss_sum += float(cuda.to_cpu(loss.data))
                     acc_sum += float(cuda.to_cpu(acc.data))
